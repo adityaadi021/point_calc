@@ -8,7 +8,7 @@ WORKDIR /usr/share/nginx/html
 RUN rm -rf ./*
 
 # Copy CAL.HTML to container as index.html
-COPY CAL.HTML ./index.html
+COPY CAL.html ./index.html
 
 # Expose port 80
 EXPOSE 80
