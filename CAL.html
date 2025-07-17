@@ -1,0 +1,1123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NEXUS ESPORTS </title>
+    <link href="https://fonts.googleapis.com/css2?family=Russo+One&family=Bebas+Neue&family=Orbitron:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            background: #181c2b;
+            color: #fff;
+            min-height: 100vh;
+            font-family: 'Orbitron', 'Bebas Neue', 'Russo One', Arial, sans-serif;
+            padding: 20px;
+            position: relative;
+            overflow-x: hidden;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .math-bg {
+            display: none;
+        }
+        
+        .container {
+            width: 100%;
+            max-width: 950px;
+            background: rgba(30, 36, 58, 0.92);
+            border-radius: 24px;
+            overflow: hidden;
+            box-shadow: 0 8px 36px 0 #1a2238cc;
+            border: none;
+            position: relative;
+            z-index: 1;
+            margin: 40px 0;
+            backdrop-filter: blur(10px) saturate(1.1);
+            -webkit-backdrop-filter: blur(10px) saturate(1.1);
+        }
+        .container::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 8px;
+            height: 100%;
+            background: linear-gradient(180deg, #e0c36a 0%, #ffb347 100%);
+            border-top-left-radius: 24px;
+            border-bottom-left-radius: 24px;
+            z-index: 2;
+        }
+        
+        .export-area {
+            background: linear-gradient(120deg, #232a45 0%, #2a3355 100%);
+            border-radius: 22px;
+            box-shadow: 0 6px 32px 0 #1a2238cc;
+            border: 2px solid #e0c36a44;
+            padding: 32px 24px 32px 24px;
+            margin: 0 auto 32px auto;
+            max-width: 900px;
+            position: relative;
+        }
+        
+        .header {
+            text-align: center;
+            padding: 32px 10px 18px 10px;
+            background: transparent;
+            border-bottom: none;
+            position: relative;
+        }
+        .header-accent {
+            width: 60px;
+            height: 3px;
+            background: linear-gradient(90deg, #e0c36a 0%, #ffb347 100%);
+            opacity: 0.7;
+            margin: 14px auto 14px auto;
+            border-radius: 2px;
+        }
+        
+        .tournament-phase {
+            font-family: 'Orbitron', 'Bebas Neue', sans-serif;
+            font-size: 1.05rem;
+            letter-spacing: 0.18em;
+            text-transform: uppercase;
+            color: var(--theme-phase-text, #e0c36a);
+            margin-bottom: 0px;
+            text-shadow: none;
+            font-weight: 600;
+        }
+        
+        .tournament-subtitle {
+            font-family: 'Orbitron', 'Bebas Neue', sans-serif;
+            font-size: 0.9rem;
+            letter-spacing: 0.14em;
+            color: #e0c36a;
+            text-transform: uppercase;
+            margin-bottom: 2px;
+            text-shadow: none;
+            font-weight: 600;
+        }
+        
+        .points-title {
+            font-family: 'Orbitron', 'Bebas Neue', sans-serif;
+            font-size: 1.7rem;
+            letter-spacing: 0.18em;
+            color: #fff;
+            text-transform: uppercase;
+            margin: 0 0 0 0;
+            text-shadow: none;
+            font-weight: 900;
+            line-height: 1.1;
+        }
+        
+        .table-container {
+            padding: 18px 10px 10px 10px;
+        }
+        
+        .standings-table {
+            width: 100%;
+            border-collapse: separate;
+            border-spacing: 0;
+            font-family: 'Orbitron', 'Bebas Neue', 'Russo One', Arial, sans-serif;
+            margin: 0 auto;
+            background: rgba(30, 36, 58, 0.99);
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 2px 16px #1a223850;
+        }
+        
+        .standings-table th {
+            background: var(--theme-header-bar-bg, linear-gradient(90deg, #2c365a 0%, #1a2238 100%));
+            color: var(--theme-header-text, #e0e0e0);
+            font-size: 1.08rem;
+            text-transform: uppercase;
+            letter-spacing: 0.13em;
+            padding: 14px 8px 14px 8px;
+            border-bottom: 3px solid var(--theme-header-bar, #e0c36a);
+            text-align: center;
+            font-weight: 800;
+            position: relative;
+            text-shadow: 0 2px 8px rgba(0,0,0,0.18);
+            transition: color 0.2s;
+            border-top-left-radius: 12px;
+            border-top-right-radius: 12px;
+        }
+        
+        .standings-table th::after {
+            display: none;
+        }
+        
+        .standings-table td {
+            padding: 13px 6px;
+            text-align: center;
+            font-size: 1.05rem;
+            border-bottom: 1px solid #e0c36a33;
+            position: relative;
+            color: #fff;
+            font-family: 'Inter', 'Orbitron', 'Bebas Neue', Arial, sans-serif;
+            transition: background 0.2s, color 0.2s, box-shadow 0.2s, transform 0.2s;
+            background: none;
+        }
+        
+        .standings-table tr:nth-child(odd) {
+            background: rgba(255,255,255,0.02);
+        }
+        
+        .standings-table tr:nth-child(even) {
+            background: rgba(0,0,0,0.05);
+        }
+        
+        .standings-table tr:last-child td {
+            border-bottom: none;
+        }
+        
+        .standings-table tr:hover td {
+            background: rgba(224,195,106,0.13);
+            color: #e0c36a;
+            box-shadow: 0 4px 18px #e0c36a22;
+            transform: scale(1.015);
+        }
+        .standings-table tr:hover .position {
+            color: #e0c36a;
+            text-shadow: none;
+        }
+        
+        .position {
+            color: #fff;
+            font-weight: bold;
+            font-size: 1.08rem;
+            border-radius: 50%;
+            padding: 2px 0;
+            min-width: 32px;
+            display: inline-block;
+            background: none;
+            border: none;
+            transition: color 0.2s, background 0.2s;
+            font-family: 'Orbitron', 'Bebas Neue', Arial, sans-serif;
+        }
+         /* Top 3 badge colors */
+         .standings-table tr:nth-child(1) .position {
+            background: #ffd700;
+            color: #222;
+            border-radius: 50%;
+            font-weight: bold;
+            border: 1.5px solid #e0c36a;
+            font-size: 1.15rem;
+            position: relative;
+        }
+        .standings-table tr:nth-child(1) .position::after {
+            content: ' 🏆';
+            font-size: 1.1rem;
+            position: absolute;
+            right: -22px;
+            top: 2px;
+        }
+         .standings-table tr:nth-child(2) .position {
+            background: #c0c0c0;
+            color: #222;
+            border-radius: 50%;
+            font-weight: bold;
+            border: 1.5px solid #e0c36a;
+            font-size: 1.13rem;
+        }
+         .standings-table tr:nth-child(3) .position {
+            background: #cd7f32;
+            color: #222;
+            border-radius: 50%;
+            font-weight: bold;
+            border: 1.5px solid #e0c36a;
+            font-size: 1.13rem;
+        }
+        
+        .team-name {
+            text-align: left;
+            padding-left: 14px;
+            color: #fff;
+            letter-spacing: 0.08em;
+            font-size: 1.05rem;
+            font-family: 'Orbitron', 'Bebas Neue', Arial, sans-serif;
+            font-weight: 700;
+            text-shadow: none;
+        }
+        
+        .footer {
+            text-align: center;
+            padding: 30px 20px;
+            background: linear-gradient(to bottom, #0d1435 0%, #080c25 100%);
+            border-top: 2px solid #00aaff;
+            position: relative;
+        }
+        
+        .footer::before {
+            content: "";
+            position: absolute;
+            top: -2px;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, #ff0055, #00aaff, #ff0055, transparent);
+        }
+        
+        .nexus-logo {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 3.8rem;
+            letter-spacing: 5px;
+            color: #ff0055;
+            text-transform: uppercase;
+            text-shadow: 0 0 15px rgba(255, 0, 85, 0.5);
+            margin-top: 10px;
+        }
+        
+        .input-section {
+            padding: 20px;
+            background: rgba(10, 15, 45, 0.6);
+            border-top: 1px solid rgba(80, 100, 180, 0.3);
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            justify-content: center;
+        }
+        
+        .input-group {
+            display: flex;
+            flex-direction: column;
+            min-width: 180px;
+        }
+        
+        .input-group label {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 1.3rem;
+            letter-spacing: 1px;
+            color: #00aaff;
+            margin-bottom: 8px;
+        }
+        
+        .input-group input {
+            background: rgba(5, 10, 30, 0.8);
+            border: 1px solid #2a3c6c;
+            border-radius: 5px;
+            padding: 12px 15px;
+            color: white;
+            font-family: 'Russo One', sans-serif;
+            font-size: 1.1rem;
+            outline: none;
+        }
+        
+        .input-group input:focus {
+            border-color: #ffcc00;
+            box-shadow: 0 0 10px rgba(255, 204, 0, 0.3);
+        }
+        
+        .btn {
+            background: linear-gradient(to bottom, #ff0055 0%, #cc0044 100%);
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            border-radius: 5px;
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 1.5rem;
+            letter-spacing: 2px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-top: 25px;
+            text-transform: uppercase;
+        }
+        
+        .btn:hover {
+            background: linear-gradient(to bottom, #ff3366 0%, #dd2255 100%);
+            box-shadow: 0 0 15px rgba(255, 0, 85, 0.5);
+            transform: translateY(-2px);
+        }
+        
+        .btn:active {
+            transform: translateY(1px);
+        }
+        
+        .glowing-text {
+            animation: glow 2s infinite alternate;
+        }
+        
+        @keyframes glow {
+            from {
+                text-shadow: 0 0 5px #fff, 0 0 10px #fff, 0 0 15px #00aaff, 0 0 20px #00aaff;
+            }
+            to {
+                text-shadow: 0 0 10px #fff, 0 0 20px #fff, 0 0 30px #ff0055, 0 0 40px #ff0055;
+            }
+        }
+        
+        .rules-panel {
+            padding: 20px;
+            background: rgba(10, 15, 45, 0.6);
+            border-top: 1px solid rgba(80, 100, 180, 0.3);
+            margin-top: 20px;
+        }
+        
+        .rules-title {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 1.8rem;
+            letter-spacing: 2px;
+            color: #ffcc00;
+            margin-bottom: 15px;
+            text-align: center;
+            text-transform: uppercase;
+        }
+        
+        .rules-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+        }
+        
+        .rule-card {
+            background: rgba(5, 10, 30, 0.8);
+            padding: 15px;
+            border-radius: 8px;
+            border: 1px solid #2a3c6c;
+        }
+        
+        .rule-card h3 {
+            color: #00aaff;
+            margin-bottom: 10px;
+            font-size: 1.3rem;
+            text-align: center;
+        }
+        
+        .rule-card p {
+            color: #ccc;
+            line-height: 1.6;
+        }
+        
+        @media (max-width: 768px) {
+            .tournament-phase {
+                font-size: 2.2rem;
+            }
+            
+            .points-title {
+                font-size: 2.8rem;
+            }
+            
+            .nexus-logo {
+                font-size: 3rem;
+            }
+            
+            .standings-table th {
+                font-size: 1.2rem;
+                padding: 12px 5px;
+            }
+            
+            .standings-table td {
+                font-size: 1.1rem;
+                padding: 12px 5px;
+            }
+            
+            .team-name {
+                padding-left: 10px;
+            }
+            
+            .input-section {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .input-group {
+                width: 100%;
+                max-width: 300px;
+            }
+        }
+        /* Winner team glow effect */
+        .standings-table tr:nth-child(1) {
+            box-shadow: 0 0 24px 6px #e0c36a88, 0 0 0 2px #e0c36a;
+            background: rgba(224, 195, 106, 0.13) !important;
+            position: relative;
+            z-index: 2;
+        }
+        .standings-table tr:nth-child(1) td,
+        .standings-table tr:nth-child(1) .team-name {
+            color: #e0c36a !important;
+            font-weight: 900;
+            text-shadow: 0 0 8px #e0c36a55;
+        }
+    </style>
+    <style>
+    :root {
+        --theme-bg: linear-gradient(120deg, #232a45 0%, #2a3355 100%);
+        --theme-header-bg: linear-gradient(90deg, #232a45 0%, #1a2238 100%);
+        --theme-accent: #e0c36a;
+        --theme-table-bg: rgba(30, 36, 58, 0.99);
+        --theme-table-border: #e0c36a44;
+        --theme-text: #fff;
+        --theme-title: #e0c36a;
+        --theme-btn: #ff0055;
+        --theme-header-bar: #e0c36a;
+        --theme-header-bar-bg: linear-gradient(90deg, #2c365a 0%, #1a2238 100%);
+        --theme-phase-text: #e0c36a;
+    }
+    body { background: var(--theme-bg) !important; }
+    .export-area { background: var(--theme-bg) !important; border-color: var(--theme-table-border) !important; }
+    .header { background: var(--theme-header-bg) !important; }
+    .header-accent, .header-divider { background: linear-gradient(90deg, var(--theme-accent) 0%, #ffb347 100%) !important; }
+    .standings-table { background: var(--theme-table-bg) !important; }
+    .standings-table th { color: var(--theme-accent) !important; border-bottom: 2px solid var(--theme-accent) !important; }
+    .standings-table td { color: var(--theme-text) !important; }
+    .points-title { color: var(--theme-title) !important; }
+    .btn { background: var(--theme-btn) !important; }
+    </style>
+</head>
+<body>
+    <div class="math-bg"></div>
+    
+    <div class="container-flex">
+      <div class="left-col">
+        <div class="export-area" style="position:relative;">
+            <div class="header">
+                <div class="tournament-phase" contenteditable="true">PHASE 1 - GROUP A - DAY 1</div>
+                <div class="header-accent"></div>
+                <div class="points-title" contenteditable="true">OVERALL STANDINGS</div>
+            </div>
+            <div class="header-divider"></div>
+            <div class="table-container">
+                <table class="standings-table">
+                    <thead>
+                        <tr>
+                            <th>P</th>
+                            <th>TEAM NAME</th>
+                            <th>W</th>
+                            <th>PP</th>
+                            <th>KP</th>
+                            <th>T</th>
+                        </tr>
+                    </thead>
+                    <tbody id="standingsBody">
+                        <!-- Teams will be populated here -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+      </div>
+      <div class="right-col">
+        <div class="rules-panel">
+            <div class="rules-title">SCORING RULES</div>
+            <div class="rules-content">
+                <div class="rule-card">
+                    <h3>ELIMINATION POINTS</h3>
+                    <p>Each elimination (kill) is worth 1 point. KP = Total elimination points.</p>
+                </div>
+                <div class="rule-card">
+                    <h3>PLACEMENT POINTS</h3>
+                    <p>1st: 12 PTS, 2nd: 9 PTS, 3rd: 8 PTS, 4th: 7 PTS, 5th: 6 PTS, 6th: 5 PTS, 7th: 4 PTS, 8th: 3 PTS, 9th: 2 PTS, 10th: 1 PT, 11th-12th: 0 PT</p>
+                </div>
+                <div class="rule-card">
+                    <h3>TOTAL POINTS</h3>
+                    <p>T = KP + PP (Total points = Kill Points + Placement Points)</p>
+                </div>
+            </div>
+        </div>
+        <div class="input-section">
+            <div class="input-group">
+                <label for="teamName">TEAM NAME</label>
+                <input type="text" id="teamName" placeholder="Enter team name">
+            </div>
+            <div class="input-group">
+                <label for="wins" style="display:none;">WINS (W)</label>
+                <input type="number" id="wins" placeholder="Enter wins" min="0" style="display:none;">
+            </div>
+            <div style="display:flex;gap:10px;">
+                <button class="btn" id="addTeam">ADD MATCH</button>
+                <button class="btn" id="deleteTeamBtn" style="background:linear-gradient(to bottom,#222 0%,#a00 100%);">REMOVE TEAM</button>
+            </div>
+        </div>
+        <div class="footer">
+            <div class="nexus-logo glowing-text">NEXUS ESPORTS</div>
+            <button id="downloadPngBtn" class="btn" style="margin-top: 18px; font-size: 1.1rem;">DOWNLOAD TABLE</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Theme Switcher -->
+    <div style="position: absolute; top: 18px; right: 32px; z-index: 100;">
+        <select id="themeSwitcher" style="padding: 8px 16px; border-radius: 6px; font-size: 1rem; font-family: 'Orbitron', 'Bebas Neue', Arial, sans-serif; font-weight: bold;">
+            <option value="default">Default</option>
+            <option value="darkblue">Dark Blue</option>
+            <option value="gold">Gold</option>
+            <option value="grey">Grey</option>
+            <option value="classic">Classic</option>
+            <option value="sunset">Sunset</option>
+            <option value="ice">Ice</option>
+            <option value="ocean">Ocean</option>
+            <option value="rose">Rose</option>
+            <option value="slate">Slate</option>
+            <option value="peach">Peach</option>
+            <option value="space">Space</option>
+        </select>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
+    <script>
+        const teams = [];
+        const matches = [];
+        
+        const teamNameInput = document.getElementById('teamName');
+        const killsInput = document.getElementById('kp');
+        const positionInput = document.getElementById('pp');
+        const addMatchBtn = document.getElementById('addTeam');
+        const standingsBody = document.getElementById('standingsBody');
+        const winsInput = document.getElementById('wins');
+        if (winsInput) winsInput.style.display = 'none';
+        const winsLabel = document.querySelector("label[for='wins']");
+        if (winsLabel) winsLabel.style.display = 'none';
+        
+        const placementPoints = [12, 9, 8, 7, 6, 5, 4, 3, 2, 1, 0, 0];
+        
+        function formatNumber(num) {
+            return num.toString().padStart(2, '0');
+        }
+        
+        function calculateTeams() {
+            const teamMap = {};
+            matches.forEach(match => {
+                if (!teamMap[match.name]) {
+                    teamMap[match.name] = { name: match.name, wins: 0, kp: 0, pp: 0, total: 0 };
+                }
+                teamMap[match.name].kp += match.kills;
+                teamMap[match.name].pp += match.placementPoints;
+                teamMap[match.name].total += match.kills + match.placementPoints;
+                if (match.position === 1) teamMap[match.name].wins += 1;
+            });
+            return Object.values(teamMap);
+        }
+        
+        function renderStandings() {
+            standingsBody.innerHTML = '';
+            const teams = calculateTeams();
+            teams.sort((a, b) => {
+                if (b.total !== a.total) return b.total - a.total;
+                if (b.wins !== a.wins) return b.wins - a.wins;
+                if (b.kp !== a.kp) return b.kp - a.kp;
+                return 0;
+            });
+            for (let i = 0; i < 12; i++) {
+                const row = document.createElement('tr');
+                const posCell = document.createElement('td');
+                posCell.className = 'position';
+                posCell.textContent = i + 1;
+                row.appendChild(posCell);
+                const nameCell = document.createElement('td');
+                nameCell.className = 'team-name';
+                const winsCell = document.createElement('td');
+                const kpCell = document.createElement('td');
+                const ppCell = document.createElement('td');
+                const totalCell = document.createElement('td');
+                // Add delete cell
+                const deleteCell = document.createElement('td');
+                if (teams[i]) {
+                    const team = teams[i];
+                    nameCell.textContent = team.name;
+                    winsCell.textContent = formatNumber(team.wins);
+                    kpCell.textContent = formatNumber(team.kp);
+                    ppCell.textContent = formatNumber(team.pp);
+                    totalCell.textContent = formatNumber(team.total);
+                    totalCell.style.color = '#ffcc00';
+                    totalCell.style.fontWeight = 'bold';
+                    // Add delete button
+                    const delBtn = document.createElement('button');
+                    delBtn.textContent = 'Remove';
+                    delBtn.className = 'btn';
+                    delBtn.style.background = 'linear-gradient(to bottom, #222 0%, #a00 100%)';
+                    delBtn.style.fontSize = '1rem';
+                    delBtn.style.padding = '6px 16px';
+                    delBtn.style.margin = '0';
+                    delBtn.style.letterSpacing = '1px';
+                    delBtn.onclick = function() {
+                        if (confirm('Delete all matches for ' + team.name + '?')) {
+                            for (let j = matches.length - 1; j >= 0; j--) {
+                                if (matches[j].name === team.name) matches.splice(j, 1);
+                            }
+                            renderStandings();
+                        }
+                    };
+                    deleteCell.appendChild(delBtn);
+                } else {
+                    nameCell.textContent = 'TEAM ' + (i + 1).toString().padStart(2, '0');
+                    winsCell.textContent = '00';
+                    kpCell.textContent = '00';
+                    ppCell.textContent = '00';
+                    totalCell.textContent = '00';
+                    deleteCell.textContent = '';
+                }
+                row.appendChild(nameCell);
+                row.appendChild(winsCell);
+                row.appendChild(ppCell);
+                row.appendChild(kpCell);
+                row.appendChild(totalCell);
+                standingsBody.appendChild(row);
+            }
+        }
+        
+        function addMatch() {
+            const matchCountInput = document.getElementById('matchCount');
+            const matchCount = parseInt(matchCountInput.value) || 1;
+            const name = teamNameInput.value.trim().toUpperCase();
+            if (!name) {
+                alert('Please enter a team name');
+                return;
+            }
+            const killsInputs = document.querySelectorAll('.match-kills');
+            const posInputs = document.querySelectorAll('.match-pos');
+            let valid = true;
+            for (let i = 0; i < matchCount; i++) {
+                const kills = parseInt(killsInputs[i].value) || 0;
+                const position = parseInt(posInputs[i].value) || 0;
+                if (position < 1 || position > 12) {
+                    alert(`Position for match ${i+1} must be between 1 and 12`);
+                    valid = false;
+                    break;
+                }
+            }
+            if (!valid) return;
+            for (let i = 0; i < matchCount; i++) {
+                const kills = parseInt(killsInputs[i].value) || 0;
+                const position = parseInt(posInputs[i].value) || 0;
+                const placementPts = placementPoints[position - 1] || 0;
+                matches.push({ matchNo: i+1, name, kills, position, placementPoints: placementPts });
+            }
+            renderStandings();
+            teamNameInput.value = '';
+            killsInputs.forEach(input => input.value = '');
+            posInputs.forEach(input => input.value = '');
+            teamNameInput.focus();
+        }
+        
+        window.addEventListener('DOMContentLoaded', () => {
+            const inputSection = document.querySelector('.input-section');
+            const matchCountGroup = document.createElement('div');
+            matchCountGroup.className = 'input-group';
+            matchCountGroup.innerHTML = `
+                <label for="matchCount">NO. OF MATCHES</label>
+                <input type="number" id="matchCount" min="1" max="12" value="1">
+            `;
+            inputSection.insertBefore(matchCountGroup, inputSection.firstChild);
+
+            const dynamicMatchInputs = document.createElement('div');
+            dynamicMatchInputs.id = 'dynamicMatchInputs';
+            dynamicMatchInputs.style.display = 'flex';
+            dynamicMatchInputs.style.flexWrap = 'wrap';
+            dynamicMatchInputs.style.gap = '10px';
+            inputSection.insertBefore(dynamicMatchInputs, inputSection.children[1]);
+
+            function renderMatchInputs(count) {
+                dynamicMatchInputs.innerHTML = '';
+                for (let i = 1; i <= count; i++) {
+                    const group = document.createElement('div');
+                    group.className = 'input-group';
+                    group.style.minWidth = '120px';
+                    group.innerHTML = `
+                        <label>MATCH ${i} KILLS</label>
+                        <input type="number" class="match-kills" data-match="${i}" min="0" placeholder="Kills">
+                        <label>MATCH ${i} POS</label>
+                        <input type="number" class="match-pos" data-match="${i}" min="1" max="12" placeholder="Pos">
+                    `;
+                    dynamicMatchInputs.appendChild(group);
+                }
+            }
+
+            renderMatchInputs(1);
+            const matchCountInput = document.getElementById('matchCount');
+            matchCountInput.addEventListener('input', (e) => {
+                let val = parseInt(e.target.value) || 1;
+                if (val < 1) val = 1;
+                if (val > 12) val = 12;
+                e.target.value = val;
+                renderMatchInputs(val);
+            });
+        });
+        
+        let matchNoInput;
+        setTimeout(() => {
+            matchNoInput = document.getElementById('matchNo');
+        }, 0);
+        
+        addMatchBtn.textContent = 'ADD MATCH';
+        addMatchBtn.removeEventListener('click', addTeam);
+        addMatchBtn.addEventListener('click', addMatch);
+        
+        renderStandings();
+
+        let contextMenu;
+        function createContextMenu() {
+            contextMenu = document.createElement('div');
+            contextMenu.id = 'teamContextMenu';
+            contextMenu.style.position = 'absolute';
+            contextMenu.style.display = 'none';
+            contextMenu.style.background = '#181c3a';
+            contextMenu.style.border = '1px solid #00aaff';
+            contextMenu.style.borderRadius = '6px';
+            contextMenu.style.zIndex = 1000;
+            contextMenu.innerHTML = `
+                <div id="editTeamOption" style="padding:10px 20px;cursor:pointer;">Edit</div>
+                <div id="deleteTeamOption" style="padding:10px 20px;cursor:pointer;color:#ff0055;">Remove</div>
+            `;
+            document.body.appendChild(contextMenu);
+        }
+        createContextMenu();
+
+        document.addEventListener('click', () => {
+            contextMenu.style.display = 'none';
+        });
+
+        standingsBody.addEventListener('contextmenu', function(e) {
+            e.preventDefault();
+            let tr = e.target.closest('tr');
+            if (!tr) return;
+            let teamName = tr.querySelector('.team-name')?.textContent;
+            if (!teamName || teamName.startsWith('TEAM ')) return;
+            contextMenu.style.display = 'block';
+            contextMenu.style.left = e.pageX + 'px';
+            contextMenu.style.top = e.pageY + 'px';
+            contextMenu.setAttribute('data-team', teamName);
+        });
+
+        document.getElementById('deleteTeamOption').onclick = function() {
+            const teamName = contextMenu.getAttribute('data-team');
+            if (confirm('Remove all matches for ' + teamName + '?')) {
+                for (let i = matches.length - 1; i >= 0; i--) {
+                    if (matches[i].name === teamName) matches.splice(i, 1);
+                }
+                renderStandings();
+            }
+            contextMenu.style.display = 'none';
+        };
+
+        document.getElementById('editTeamOption').onclick = function() {
+            const teamName = contextMenu.getAttribute('data-team');
+            const teamMatches = matches.filter(m => m.name === teamName);
+            if (teamMatches.length === 0) return;
+            const matchCountInput = document.getElementById('matchCount');
+            matchCountInput.value = teamMatches.length;
+            matchCountInput.dispatchEvent(new Event('input'));
+            setTimeout(() => {
+                const killsInputs = document.querySelectorAll('.match-kills');
+                const posInputs = document.querySelectorAll('.match-pos');
+                for (let i = 0; i < teamMatches.length; i++) {
+                    killsInputs[i].value = teamMatches[i].kills;
+                    posInputs[i].value = teamMatches[i].position;
+                }
+                teamNameInput.value = teamName;
+                for (let i = matches.length - 1; i >= 0; i--) {
+                    if (matches[i].name === teamName) matches.splice(i, 1);
+                }
+                renderStandings();
+            }, 100);
+            contextMenu.style.display = 'none';
+        };
+
+        // Delete Team Button logic
+        document.addEventListener('DOMContentLoaded', function() {
+            const deleteBtn = document.getElementById('deleteTeamBtn');
+            if (deleteBtn) {
+                deleteBtn.addEventListener('click', function() {
+                    const name = teamNameInput.value.trim().toUpperCase();
+                    if (!name) {
+                        alert('Please enter a team name to remove');
+                        return;
+                    }
+                    const found = matches.some(m => m.name === name);
+                    if (!found) {
+                        alert('No matches found for this team');
+                        return;
+                    }
+                    if (confirm('Remove all matches for ' + name + '?')) {
+                        for (let i = matches.length - 1; i >= 0; i--) {
+                            if (matches[i].name === name) matches.splice(i, 1);
+                        }
+                        renderStandings();
+                        teamNameInput.value = '';
+                    }
+                });
+            }
+        });
+    </script>
+    <script>
+    // Theme definitions
+    const themes = {
+        default: {
+            '--theme-bg': 'linear-gradient(120deg, #232a45 0%, #2a3355 100%)',
+            '--theme-header-bg': 'linear-gradient(90deg, #232a45 0%, #1a2238 100%)',
+            '--theme-accent': '#e0c36a',
+            '--theme-table-bg': 'rgba(30, 36, 58, 0.99)',
+            '--theme-table-border': '#e0c36a44',
+            '--theme-text': '#fff',
+            '--theme-title': '#e0c36a',
+            '--theme-btn': '#ff0055',
+            '--theme-header-text': '#e0e0e0',
+            '--theme-header-bar': '#e0c36a',
+            '--theme-header-bar-bg': 'linear-gradient(90deg, #2c365a 0%, #1a2238 100%)',
+            '--theme-phase-text': '#e0c36a',
+        },
+        darkblue: {
+            '--theme-bg': 'linear-gradient(135deg, #0c1027 0%, #1a1f4b 100%)',
+            '--theme-header-bg': 'linear-gradient(90deg, #1a2350 0%, #0d1435 100%)',
+            '--theme-accent': '#ffcc00',
+            '--theme-table-bg': 'rgba(10, 12, 35, 0.95)',
+            '--theme-table-border': '#ffcc0033',
+            '--theme-text': '#fff',
+            '--theme-title': '#ffcc00',
+            '--theme-btn': '#ff0055',
+            '--theme-header-text': '#f5f5f5',
+            '--theme-header-bar': '#ffcc00',
+            '--theme-header-bar-bg': 'linear-gradient(90deg, #1a2350 0%, #0d1435 100%)',
+            '--theme-phase-text': '#ffcc00',
+        },
+        gold: {
+            '--theme-bg': 'linear-gradient(120deg, #fffbe6 0%, #e0c36a 100%)',
+            '--theme-header-bg': 'linear-gradient(90deg, #fffbe6 0%, #e0c36a 100%)',
+            '--theme-accent': '#bfa16a',
+            '--theme-table-bg': 'rgba(255, 251, 230, 0.99)',
+            '--theme-table-border': '#bfa16a44',
+            '--theme-text': '#222',
+            '--theme-title': '#bfa16a',
+            '--theme-btn': '#bfa16a',
+            '--theme-header-text': '#bfa16a',
+            '--theme-header-bar': '#bfa16a',
+            '--theme-header-bar-bg': 'linear-gradient(90deg, #fffbe6 0%, #e0c36a 100%)',
+            '--theme-phase-text': '#bfa16a',
+        },
+        grey: {
+            '--theme-bg': 'linear-gradient(135deg, #232526 0%, #757f9a 100%)',
+            '--theme-header-bg': 'linear-gradient(90deg, #757f9a 0%, #232526 100%)',
+            '--theme-accent': '#757f9a',
+            '--theme-table-bg': 'rgba(35, 37, 38, 0.99)',
+            '--theme-table-border': '#757f9a44',
+            '--theme-text': '#fff',
+            '--theme-title': '#757f9a',
+            '--theme-btn': '#757f9a',
+            '--theme-header-text': '#e0e0e0',
+            '--theme-header-bar': '#757f9a',
+            '--theme-header-bar-bg': 'linear-gradient(90deg, #757f9a 0%, #232526 100%)',
+            '--theme-phase-text': '#757f9a',
+        },
+        classic: {
+            '--theme-bg': 'linear-gradient(135deg, #fff 0%, #e0e0e0 100%)',
+            '--theme-header-bg': 'linear-gradient(90deg, #fff 0%, #e0e0e0 100%)',
+            '--theme-accent': '#222',
+            '--theme-table-bg': 'rgba(255,255,255,0.99)',
+            '--theme-table-border': '#22222244',
+            '--theme-text': '#222',
+            '--theme-title': '#222',
+            '--theme-btn': '#222',
+            '--theme-header-text': '#222',
+            '--theme-header-bar': '#222',
+            '--theme-header-bar-bg': 'linear-gradient(90deg, #fff 0%, #e0e0e0 100%)',
+            '--theme-phase-text': '#bfa16a',
+        },
+        sunset: {
+            '--theme-bg': 'linear-gradient(135deg, #ff9966 0%, #ff5e62 100%)',
+            '--theme-header-bg': 'linear-gradient(90deg, #ff9966 0%, #ff5e62 100%)',
+            '--theme-accent': '#fff',
+            '--theme-table-bg': 'rgba(255, 153, 102, 0.99)',
+            '--theme-table-border': '#ff5e6244',
+            '--theme-text': '#222',
+            '--theme-title': '#fff',
+            '--theme-btn': '#ff5e62',
+            '--theme-header-text': '#fff',
+            '--theme-header-bar': '#ffb347',
+            '--theme-header-bar-bg': 'linear-gradient(90deg, #ff9966 0%, #ff5e62 100%)',
+            '--theme-phase-text': '#fff176',
+        },
+        ice: {
+            '--theme-bg': 'linear-gradient(135deg, #e0eafc 0%, #cfdef3 100%)',
+            '--theme-header-bg': 'linear-gradient(90deg, #e0eafc 0%, #cfdef3 100%)',
+            '--theme-accent': '#3a7bd5',
+            '--theme-table-bg': 'rgba(224, 234, 252, 0.99)',
+            '--theme-table-border': '#3a7bd544',
+            '--theme-text': '#222',
+            '--theme-title': '#3a7bd5',
+            '--theme-btn': '#3a7bd5',
+            '--theme-header-text': '#3a7bd5',
+            '--theme-header-bar': '#3a7bd5',
+            '--theme-header-bar-bg': 'linear-gradient(90deg, #e0eafc 0%, #3a7bd5 100%)',
+            '--theme-phase-text': '#3a7bd5',
+        },
+        ocean: {
+            '--theme-bg': 'linear-gradient(135deg, #2193b0 0%, #6dd5ed 100%)',
+            '--theme-header-bg': 'linear-gradient(90deg, #2193b0 0%, #6dd5ed 100%)',
+            '--theme-accent': '#0a3d62',
+            '--theme-table-bg': 'rgba(33, 147, 176, 0.95)',
+            '--theme-table-border': '#0a3d6244',
+            '--theme-text': '#fff',
+            '--theme-title': '#0a3d62',
+            '--theme-btn': '#0a3d62',
+            '--theme-header-text': '#e0f7fa',
+            '--theme-header-bar': '#0a3d62',
+            '--theme-header-bar-bg': 'linear-gradient(90deg, #2193b0 0%, #6dd5ed 100%)',
+            '--theme-phase-text': '#0a3d62',
+        },
+        rose: {
+            '--theme-bg': 'linear-gradient(135deg, #ffafbd 0%, #ffc3a0 100%)',
+            '--theme-header-bg': 'linear-gradient(90deg, #ffafbd 0%, #ffc3a0 100%)',
+            '--theme-accent': '#d72660',
+            '--theme-table-bg': 'rgba(255, 175, 189, 0.95)',
+            '--theme-table-border': '#d7266044',
+            '--theme-text': '#222',
+            '--theme-title': '#d72660',
+            '--theme-btn': '#d72660',
+            '--theme-header-text': '#d72660',
+            '--theme-header-bar': '#d72660',
+            '--theme-header-bar-bg': 'linear-gradient(90deg, #ffafbd 0%, #ffc3a0 100%)',
+            '--theme-phase-text': '#d72660',
+        },
+        slate: {
+            '--theme-bg': 'linear-gradient(135deg, #3a3d40 0%, #181719 100%)',
+            '--theme-header-bg': 'linear-gradient(90deg, #3a3d40 0%, #181719 100%)',
+            '--theme-accent': '#bfc0c0',
+            '--theme-table-bg': 'rgba(58, 61, 64, 0.95)',
+            '--theme-table-border': '#bfc0c044',
+            '--theme-text': '#fff',
+            '--theme-title': '#bfc0c0',
+            '--theme-btn': '#bfc0c0',
+            '--theme-header-text': '#bfc0c0',
+            '--theme-header-bar': '#bfc0c0',
+            '--theme-header-bar-bg': 'linear-gradient(90deg, #3a3d40 0%, #bfc0c0 100%)',
+            '--theme-phase-text': '#bfc0c0',
+        },
+        peach: {
+            '--theme-bg': 'linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%)',
+            '--theme-header-bg': 'linear-gradient(90deg, #ffecd2 0%, #fcb69f 100%)',
+            '--theme-accent': '#ff7e5f',
+            '--theme-table-bg': 'rgba(255, 236, 210, 0.95)',
+            '--theme-table-border': '#ff7e5f44',
+            '--theme-text': '#222',
+            '--theme-title': '#ff7e5f',
+            '--theme-btn': '#ff7e5f',
+            '--theme-header-text': '#ff7e5f',
+            '--theme-header-bar': '#ff7e5f',
+            '--theme-header-bar-bg': 'linear-gradient(90deg, #ffecd2 0%, #fcb69f 100%)',
+            '--theme-phase-text': '#ff7e5f',
+        },
+        space: {
+            '--theme-bg': 'linear-gradient(135deg, #0f2027 0%, #2c5364 100%)',
+            '--theme-header-bg': 'linear-gradient(90deg, #0f2027 0%, #2c5364 100%)',
+            '--theme-accent': '#00c3ff',
+            '--theme-table-bg': 'rgba(15, 32, 39, 0.95)',
+            '--theme-table-border': '#00c3ff44',
+            '--theme-text': '#fff',
+            '--theme-title': '#00c3ff',
+            '--theme-btn': '#00c3ff',
+            '--theme-header-text': '#00c3ff',
+            '--theme-header-bar': '#00c3ff',
+            '--theme-header-bar-bg': 'linear-gradient(90deg, #0f2027 0%, #2c5364 100%)',
+            '--theme-phase-text': '#00c3ff',
+        },
+    };
+
+    function applyTheme(themeName) {
+        const theme = themes[themeName] || themes['default'];
+        for (const key in theme) {
+            document.documentElement.style.setProperty(key, theme[key]);
+        }
+        localStorage.setItem('selectedTheme', themeName);
+    }
+
+    document.addEventListener('DOMContentLoaded', function() {
+        const themeSwitcher = document.getElementById('themeSwitcher');
+        if (themeSwitcher) {
+            // Load last theme
+            const lastTheme = localStorage.getItem('selectedTheme') || 'default';
+            themeSwitcher.value = lastTheme;
+            applyTheme(lastTheme);
+            themeSwitcher.addEventListener('change', function() {
+                applyTheme(this.value);
+            });
+        }
+    });
+    </script>
+    <script>
+    // Download PNG logic
+    document.addEventListener('DOMContentLoaded', function() {
+        const downloadBtn = document.getElementById('downloadPngBtn');
+        if (downloadBtn) {
+            downloadBtn.addEventListener('click', async function() {
+                if (!confirm('Are you sure you want to download the points table as a PNG?')) return;
+                // Select only the export area (header + table)
+                const exportArea = document.querySelector('.export-area');
+                // Add a beautiful NEXUS watermark footer temporarily
+                let watermarkFooter = document.createElement('div');
+                watermarkFooter.textContent = 'NEXUS ESPORTS';
+                watermarkFooter.style.width = '100%';
+                watermarkFooter.style.textAlign = 'center';
+                watermarkFooter.style.fontFamily = "'Bebas Neue', 'Orbitron', Arial, sans-serif";
+                watermarkFooter.style.fontSize = '3.8rem';
+                watermarkFooter.style.letterSpacing = '5px';
+                watermarkFooter.style.fontWeight = 'bold';
+                watermarkFooter.style.textTransform = 'uppercase';
+                watermarkFooter.style.color = '#e0c36a';
+                watermarkFooter.style.marginTop = '32px';
+                watermarkFooter.style.marginBottom = '-10px';
+                watermarkFooter.style.userSelect = 'none';
+                exportArea.appendChild(watermarkFooter);
+
+                // Add Instagram (bottom left) and YouTube (bottom right) handles
+                let igDiv = document.createElement('div');
+                igDiv.innerHTML = `
+                  <span style="vertical-align:middle;display:inline-block;width:22px;height:22px;">
+                    <svg viewBox='0 0 448 448' width='22' height='22' fill='none' xmlns='http://www.w3.org/2000/svg'>
+                      <rect width='448' height='448' rx='120' fill='none'/>
+                      <path d='M224 144c-44.2 0-80 35.8-80 80s35.8 80 80 80 80-35.8 80-80-35.8-80-80-80zm0 128c-26.5 0-48-21.5-48-48s21.5-48 48-48 48 21.5 48 48-21.5 48-48 48zm88-132c0 10.7-8.7 19.3-19.3 19.3-10.7 0-19.3-8.7-19.3-19.3 0-10.7 8.7-19.3 19.3-19.3 10.7 0 19.3 8.7 19.3 19.3zm76 19.3c-1.7-35.3-9.9-66.7-36.2-92.9C378.7 9.9 347.3 1.7 312 0 277.3-1.7 170.7-1.7 136 0 100.7 1.7 69.3 9.9 43.1 36.2 16.9 62.5 8.7 93.9 7 128.6 5.3 163.3 5.3 270 7 304.7c1.7 35.3 9.9 66.7 36.2 92.9 26.2 26.2 57.6 34.4 92.9 36.1 34.7 1.7 141.3 1.7 176 0 35.3-1.7 66.7-9.9 92.9-36.1 26.2-26.2 34.4-57.6 36.1-92.9 1.7-34.7 1.7-141.3 0-176zm-48.5 214.7c-7.8 19.6-22.9 34.7-42.5 42.5-29.4 11.7-99.2 9-132.9 9s-103.5 2.6-132.9-9c-19.6-7.8-34.7-22.9-42.5-42.5-11.7-29.4-9-99.2-9-132.9s-2.6-103.5 9-132.9c7.8-19.6 22.9-34.7 42.5-42.5 29.4-11.7 99.2-9 132.9-9s103.5-2.6 132.9 9c19.6 7.8 34.7 22.9 42.5 42.5 11.7 29.4 9 99.2 9 132.9s2.6 103.5-9 132.9z' fill='#e0c36a'/>
+                    </svg>
+                  </span>
+                  <span style="font-size:1.1rem;vertical-align:middle;">nexus_esports.ig</span>
+                `;
+                igDiv.style.position = 'absolute';
+                igDiv.style.left = '18px';
+                igDiv.style.bottom = '18px';
+                igDiv.style.color = '#e0c36a';
+                igDiv.style.fontFamily = "'Orbitron', 'Bebas Neue', Arial, sans-serif";
+                igDiv.style.fontWeight = 'bold';
+                igDiv.style.fontSize = '1.1rem';
+                igDiv.style.letterSpacing = '1px';
+                igDiv.style.userSelect = 'none';
+                exportArea.appendChild(igDiv);
+
+                let ytDiv = document.createElement('div');
+                ytDiv.innerHTML = `
+                  <span style="vertical-align:middle;display:inline-block;width:22px;height:22px;">
+                    <svg viewBox='0 0 576 512' width='22' height='22' fill='none' xmlns='http://www.w3.org/2000/svg'>
+                      <path d='M549.7 124.1c-6.3-23.7-24.9-42.3-48.6-48.6C465.5 64 288 64 288 64s-177.5 0-213.1 11.5c-23.7 6.3-42.3 24.9-48.6 48.6C16 159.7 16 256 16 256s0 96.3 10.3 131.9c6.3 23.7 24.9 42.3 48.6 48.6C110.5 448 288 448 288 448s177.5 0 213.1-11.5c23.7-6.3 42.3-24.9 48.6-48.6C560 352.3 560 256 560 256s0-96.3-10.3-131.9zM232 336V176l142.7 80L232 336z' fill='#e0c36a'/>
+                    </svg>
+                  </span>
+                  <span style="font-size:1.1rem;vertical-align:middle;">NEXUS ESPORTS</span>
+                `;
+                ytDiv.style.position = 'absolute';
+                ytDiv.style.right = '18px';
+                ytDiv.style.bottom = '18px';
+                ytDiv.style.color = '#e0c36a';
+                ytDiv.style.fontFamily = "'Orbitron', 'Bebas Neue', Arial, sans-serif";
+                ytDiv.style.fontWeight = 'bold';
+                ytDiv.style.fontSize = '1.1rem';
+                ytDiv.style.letterSpacing = '1px';
+                ytDiv.style.userSelect = 'none';
+                exportArea.appendChild(ytDiv);
+                // Wait for DOM update
+                await new Promise(r => setTimeout(r, 100));
+                html2canvas(exportArea, {backgroundColor: null, useCORS: true, scale: 2}).then(canvas => {
+                    watermarkFooter.remove();
+                    igDiv.remove();
+                    ytDiv.remove();
+                    const link = document.createElement('a');
+                    link.download = 'points-table.png';
+                    link.href = canvas.toDataURL('image/png');
+                    link.click();
+                });
+            });
+        }
+    });
+    </script>
+</body>
+</html>
