@@ -1,5 +1,16 @@
-# Use nginx to serve static HTML
+# Use official Nginx image as base
 FROM nginx:alpine
-COPY sort_by_point.html /usr/share/nginx/html/index.html
+
+# Set working directory
+WORKDIR /usr/share/nginx/html
+
+# Remove default nginx static assets
+RUN rm -rf ./*
+
+# Copy CAL.HTML to container as index.html
+COPY CAL.HTML ./index.html
+
+# Expose port 80
 EXPOSE 80
-CMD ["nginx", "-g", "daemon off;"]
+
+# No CMD needed, nginx default
